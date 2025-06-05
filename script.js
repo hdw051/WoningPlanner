@@ -298,7 +298,7 @@ document.addEventListener('DOMContentLoaded', () => {
     workDays.forEach((day) => {
       const dayCard = document.createElement('div');
       dayCard.className =
-        'day-card glass-card flex-shrink-0 w-32 h-32 p-3 border-2 border-stone-200 rounded-lg cursor-pointer hover:border-blue-400 hover:shadow-lg';
+        'day-card glass-card flex-shrink-0 w-32 h-32 p-3 rounded-lg cursor-pointer';
       dayCard.dataset.day = day.day;
 
       const date = new Date(day.date + 'T00:00:00');
@@ -307,11 +307,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
       dayCard.innerHTML = `
         <div class="flex justify-between items-center text-sm mb-1">
-          <span class="font-bold text-slate-700">Dag ${day.day}</span>
+          <span class="font-bold text-dark">Dag ${day.day}</span>
         </div>
-        <div class="text-xs text-slate-500">${dayOfWeek}</div>
-        <div class="text-sm font-semibold text-slate-600">${dayOfMonth}</div>
-        <div class="text-xs text-slate-500 mt-2 truncate">${day.title}</div>
+        <div class="text-xs text-muted">${dayOfWeek}</div>
+        <div class="text-sm font-semibold text-dark">${dayOfMonth}</div>
+        <div class="text-xs text-muted mt-2 truncate">${day.title}</div>
       `;
 
       dayCard.addEventListener('click', () => {
@@ -329,8 +329,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!dayData) {
       detailsContainer.innerHTML = `
         <div class="glass-card p-6 text-center detail-card-enter">
-          <h3 class="text-xl font-bold text-slate-800">${t('welcomeTitle')}</h3>
-          <p class="text-slate-600 mt-2">${t('welcomeText')}</p>
+          <h3 class="text-xl font-bold text-dark">${t('welcomeTitle')}</h3>
+          <p class="text-muted mt-2">${t('welcomeText')}</p>
         </div>`;
       return;
     }
@@ -342,23 +342,23 @@ document.addEventListener('DOMContentLoaded', () => {
         .map(
           (task, index) => `
         <li class="flex items-center mb-2">
-          <input type="text" value="${task.text}" data-type="tasks" data-id="${task.id}" class="flex-grow border rounded-md px-2 py-1 mr-2 text-slate-700">
-          <button onclick="deleteItem(${dayData.day}, 'tasks', ${index})" aria-label="delete" class="text-red-500 hover:text-red-700 text-xl leading-none">🗑️</button>
+          <input type="text" value="${task.text}" data-type="tasks" data-id="${task.id}" class="flex-grow border rounded-md px-2 py-1 mr-2 text-dark">
+          <button onclick="deleteItem(${dayData.day}, 'tasks', ${index})" aria-label="delete" class="text-accent hover:opacity-80 text-xl leading-none">🗑️</button>
         </li>`
         )
         .join('');
-      tasksHtml += `<button onclick="addItem(${dayData.day}, 'tasks')" class="mt-4 px-3 py-1 bg-green-600 text-white rounded-md hover:bg-green-700 transition">${t('newTask')}</button>`;
+      tasksHtml += `<button onclick="addItem(${dayData.day}, 'tasks')" class="mt-4 px-3 py-1 bg-primary rounded-md hover:opacity-90 transition">${t('newTask')}</button>`;
 
       residentActionsHtml = dayData.residentActions
         .map(
           (action, index) => `
         <li class="flex items-center mb-2">
-          <input type="text" value="${action.text}" data-type="residentActions" data-id="${action.id}" class="flex-grow border rounded-md px-2 py-1 mr-2 text-slate-700">
-          <button onclick="deleteItem(${dayData.day}, 'residentActions', ${index})" aria-label="delete" class="text-red-500 hover:text-red-700 text-xl leading-none">🗑️</button>
+          <input type="text" value="${action.text}" data-type="residentActions" data-id="${action.id}" class="flex-grow border rounded-md px-2 py-1 mr-2 text-dark">
+          <button onclick="deleteItem(${dayData.day}, 'residentActions', ${index})" aria-label="delete" class="text-accent hover:opacity-80 text-xl leading-none">🗑️</button>
         </li>`
         )
         .join('');
-      residentActionsHtml += `<button onclick="addItem(${dayData.day}, 'residentActions')" class="mt-4 px-3 py-1 bg-green-600 text-white rounded-md hover:bg-green-700 transition">${t('newAction')}</button>`;
+      residentActionsHtml += `<button onclick="addItem(${dayData.day}, 'residentActions')" class="mt-4 px-3 py-1 bg-primary rounded-md hover:opacity-90 transition">${t('newAction')}</button>`;
     } else {
       tasksHtml = dayData.tasks
         .map((task) => {
@@ -388,14 +388,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     detailsContainer.innerHTML = `
       <div class="glass-card p-6 md:p-8 detail-card-enter">
-        <h3 class="text-xl font-bold text-slate-800 mb-4">Details voor Dag ${dayData.day} (${new Date(dayData.date + 'T00:00:00').toLocaleDateString('nl-NL', { weekday: 'long', day: 'numeric', month: 'long' })})</h3>
+        <h3 class="text-xl font-bold text-dark mb-4">Details voor Dag ${dayData.day} (${new Date(dayData.date + 'T00:00:00').toLocaleDateString('nl-NL', { weekday: 'long', day: 'numeric', month: 'long' })})</h3>
         <div class="grid md:grid-cols-2 gap-8">
           <div>
-            <h4 class="font-semibold text-slate-700 mb-2 border-b pb-2">Werkzaamheden</h4>
+            <h4 class="font-semibold text-dark mb-2 border-b pb-2">Werkzaamheden</h4>
             <ul class="list-none p-0 m-0" id="tasks-list">${tasksHtml}</ul>
           </div>
           <div>
-            <h4 class="font-semibold text-slate-700 mb-2 border-b pb-2">Wat u moet doen</h4>
+            <h4 class="font-semibold text-dark mb-2 border-b pb-2">Wat u moet doen</h4>
             <ul class="list-none p-0 m-0" id="resident-actions-list">${residentActionsHtml}</ul>
           </div>
         </div>

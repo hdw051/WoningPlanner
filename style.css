@@ -1,6 +1,8 @@
 body {
-    font-family: 'Inter', sans-serif;
-    background-color: #F5F5F4; /* Warm Neutral - stone-100 */
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Inter', sans-serif;
+    background-color: #FAFAFA; /* iOS light gray */
+    color: #1C1C1E; /* iOS label color */
+    line-height: 1.5;
 }
 .timeline-container::-webkit-scrollbar {
     height: 8px;
@@ -9,15 +11,19 @@ body {
     background: #E7E5E4; /* stone-200 */
 }
 .timeline-container::-webkit-scrollbar-thumb {
-    background: #A8A29E; /* stone-400 */
+    background: #C7C7CC; /* iOS scrollbar */
     border-radius: 4px;
 }
 .timeline-container::-webkit-scrollbar-thumb:hover {
-    background: #78716C; /* stone-500 */
+    background: #A1A1AA; /* darker on hover */
 }
 .day-card {
-    transition: all 0.2s ease-in-out;
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+.day-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
 }
 .day-card.active {
     border-color: #1D4ED8; /* blue-700 */
@@ -45,4 +51,27 @@ body {
 .task-item.completed span {
     text-decoration: line-through;
     color: #6B7280; /* gray-500 */
+}
+
+#progress-bar {
+    background-color: #0A84FF; /* iOS system blue */
+}
+
+.button-primary {
+    background-color: #0A84FF;
+    color: #fff;
+    border-radius: 0.5rem;
+    transition: background-color 0.15s ease;
+}
+.button-primary:hover {
+    background-color: #0060DF;
+}
+.button-secondary {
+    background-color: #8E8E93;
+    color: #fff;
+    border-radius: 0.5rem;
+    transition: background-color 0.15s ease;
+}
+.button-secondary:hover {
+    background-color: #636366;
 }

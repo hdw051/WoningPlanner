@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dagkalender Werkzaamheden Vinkenhof 6</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Renovation (Beige, Slate, Soft Blue) -->
+    <!-- Application Structure Plan: The application uses an interactive timeline/dashboard structure. The main view is a horizontal timeline of all workdays, making the project duration immediately clear. Users can click on any day to see detailed information below. The primary interactions now revolve around a personal checklist functionality for each day's tasks and resident actions, coupled with an editing mode that allows the user to modify, add, or delete individual tasks and resident actions. This structure was chosen because it transforms a passive document into an active, editable task-oriented tool, allowing the resident to track their progress and customize the planning to their needs. -->
+    <!-- Visualization & Content Choices: Report Info (Daily schedule) -> Goal (Track and customize tasks/actions) -> Viz Method (Interactive horizontal timeline with clickable days, dynamic detail view with checkboxes or editable inputs) -> Interaction (Click to show details, checkboxes to mark completion, button to toggle edit mode, input fields for editing, add/delete buttons for items) -> Justification (Provides a clear overview and empowers user to manage tasks directly and adapt the plan). All interactions are handled with vanilla JS on a structured data array, ensuring no complex libraries are needed and confirming NO SVG/Mermaid. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F5F5F4; /* Warm Neutral - stone-100 */
+        }
+        .timeline-container::-webkit-scrollbar {
+            height: 8px;
+        }
+        .timeline-container::-webkit-scrollbar-track {
+            background: #E7E5E4; /* stone-200 */
+        }
+        .timeline-container::-webkit-scrollbar-thumb {
+            background: #A8A29E; /* stone-400 */
+            border-radius: 4px;
+        }
+        .timeline-container::-webkit-scrollbar-thumb:hover {
+            background: #78716C; /* stone-500 */
+        }
+        .day-card {
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+        }
+        .day-card.active {
+            border-color: #1D4ED8; /* blue-700 */
+            background-color: #DBEAFE; /* blue-100 */
+        }
+        .detail-card-enter {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .task-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            padding-left: 0;
+            list-style: none;
+            margin-bottom: 8px;
+        }
+        .task-item input[type="checkbox"] {
+            margin-top: 4px;
+            flex-shrink: 0;
+        }
+        .task-item.completed span {
+            text-decoration: line-through;
+            color: #6B7280; /* gray-500 */
+        }
+    </style>
+</head>
+<body class="antialiased text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-5xl">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-800">Werkplanning Vinkenhof 6</h1>
+            <p class="text-slate-600 mt-2">Jouw persoonlijke checklist voor de geplande werkzaamheden.</p>
+        </header>
+
+        <main>
+            <div class="bg-white rounded-xl shadow-md p-4 md:p-6 mb-8">
+                <div class="mb-4">
+                     <h2 class="text-lg font-semibold text-slate-700 mb-2">Projectvoortgang</h2>
+                     <div class="w-full bg-stone-200 rounded-full h-4">
+                         <div id="progress-bar" class="bg-blue-600 h-4 rounded-full transition-all duration-500" style="width: 0%;"></div>
+                     </div>
+                </div>
+                 <div id="progress-text" class="text-sm text-center text-slate-600"></div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md p-4 md:p-6 mb-8">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4">
+                    <h2 class="text-lg font-semibold text-slate-700">Tijdlijn</h2>
+                    <button id="edit-planning-btn" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition mt-4 sm:mt-0">Bewerk Planning</button>
+                </div>
+
+                <div id="timeline-container" class="timeline-container flex overflow-x-auto pb-4 space-x-3">
+                </div>
+            </div>
+
+            <div id="details-container">
+            </div>
+        </main>
+
+        <footer class="text-center mt-12 text-sm text-slate-500">
+            <p>Deze planning is een indicatie. Werkelijke data kunnen afwijken.</p>
+        </footer>
+    </div>
+
+    <script>
+        const defaultWorkDays = [
+            {
+                day: 1, date: "2025-06-10",
+                title: "Voorbereiding & Asbest",
+                tasks: ["Afdekken van looproutes en werkplekken", "Aftimmeren van schoorsteen en dakraam (zolder)", "Verwijderen aftimmering bij asbestbuizen (hele woning)"],
+                residentActions: ["Zorg voor vrije toegang tot alle ruimtes", "Maak looproutes en werkruimtes vrij", "Zolder gedeeltelijk leegmaken (zoals besproken bij het huisbezoek)"]
+            },
+            {
+                day: 2, date: "2025-06-11",
+                title: "Asbest Verwijderen",
+                tasks: ["Verwijderen van asbest (hele woning)"],
+                residentActions: ["Toegang geven tot alle ruimtes", "Looproutes en werkplekken vrijhouden", "Zoldergedeelte leegmaken"]
+            },
+            {
+                day: 3, date: "2025-06-12",
+                title: "Voorbereiding WTW",
+                tasks: ["Afkoppelen van installatie (zolder)", "Installatie reinigen", "Gaten boren voor WTW-installatie (hele woning)", "Aantekenen van posities voor WTW-onderdelen"],
+                residentActions: ["Toegang geven tot alle ruimtes", "Zoldergedeelte leegmaken", "Radiatorkranen en bedieningsknoppen bereikbaar maken"]
+            },
+            {
+                day: 4, date: "2025-06-13",
+                title: "Elektrische Installaties",
+                tasks: ["Nieuwe deurbel installeren (voorgevel)", "Vervangen van groepenkast (meterkast)", "Perilex-aansluiting aanleggen in keuken (indien nodig)"],
+                residentActions: ["Toegang geven tot alle ruimtes", "Meterkast leegmaken", "Fornuis verplaatsen of keukenkastje leegmaken (bij perilex)", "Zoldergedeelte leeghouden"]
+            },
+            {
+                day: 5, date: "2025-06-16",
+                title: "Radiatoren Vervangen",
+                tasks: ["Radiatoren vervangen in keuken en woonkamer", "Vervangen van radiatorkranen", "Spoelen/reinigen van radiatoren (binnenzijde)"],
+                residentActions: ["Toegang geven tot alle ruimtes", "Radiatorkranen bereikbaar houden", "Zoldergedeelte leeghouden"]
+            },
+            {
+                day: 6, date: "2025-06-17",
+                title: "Installatie Warmtepomp",
+                tasks: ["Installatie warmtepomp op zolder", "Installatie WTW-unit", "Aanleggen ventilatiekanalen", "Aansluiten afzuigkap"],
+                residentActions: ["Toegang geven tot alle ruimtes", "Zoldergedeelte leegmaken"]
+            },
+            {
+                day: 7, date: "2025-06-18",
+                title: "Kozijnen en Deuren",
+                tasks: ["Vervangen van kunststof kozijnen", "Vervangen voor- en achterdeur", "Plaatsen van vensterbanken", "Glas vervangen (1e verdieping)"],
+                residentActions: ["Zorg dat ramen en vensterbanken leeg zijn", "Geef aan waar de nieuwe sleutels kunnen worden opgehaald", "Toegang geven tot alle ruimtes"]
+            },
+            {
+                day: 8, date: "2025-06-19",
+                title: "Aftimmering & Isolatie",
+                tasks: ["Aftimmering om WTW-buizen (slaapkamer)", "Geïsoleerd vloerluik plaatsen", "Isolatie begane grondvloer (of op dag 9)"],
+                residentActions: ["Toegang geven tot alle ruimtes", "Zoldergedeelte leeghouden"]
+            },
+            {
+                day: 9, date: "2025-06-20",
+                title: "Vloerisolatie & Afbouw",
+                tasks: ["Isoleren van begane grondvloer (indien nog niet gebeurd)", "Voorzetwand en brandwerend plafond in berging/uitbouw (indien gekozen)"],
+                residentActions: ["Berging/uitbouw leegmaken", "Toegang geven tot alle ruimtes"]
+            },
+            {
+                day: 10, date: "2025-06-23",
+                title: "Afbouw Berging",
+                tasks: ["Plaatsen voorzetwand en brandwerend plafond in berging/uitbouw (indien gekozen)"],
+                residentActions: ["Kruipluik bereikbaar houden", "Toegang geven tot alle ruimtes"]
+            },
+            {
+                day: 11, date: "2025-06-24",
+                title: "Schilderwerk",
+                tasks: ["Schilderwerk aan aftimmeringen en plafond van uitbouw (hele woning)"],
+                residentActions: ["Vensterbanken leegmaken", "Raambekleding verwijderen", "Kruipluik bereikbaar houden", "Toegang geven tot alle ruimtes"]
+            },
+            {
+                day: 12, date: "2025-06-25",
+                title: "Vervolg Schilderwerk",
+                tasks: ["Vervolg schilderwerk aan aftimmeringen en plafond uitbouw"],
+                residentActions: ["Toegang geven tot alle ruimtes"]
+            },
+            {
+                day: 13, date: "2025-06-26",
+                title: "Eindschoonmaak",
+                tasks: ["Eindschoonmaak (hele woning)"],
+                residentActions: ["Toegang geven tot alle ruimtes"]
+            },
+            {
+                day: 14, date: "2025-06-27",
+                title: "Oplevering",
+                tasks: ["Vooroplevering en oplevering van uw woning"],
+                residentActions: ["Toegang geven tot alle ruimtes"]
+            }
+        ];
+
+        let workDays = JSON.parse(localStorage.getItem('workDaysData'));
+        if (!workDays) {
+            workDays = defaultWorkDays;
+            localStorage.setItem('workDaysData', JSON.stringify(workDays));
+            console.log('Using default workDays, saved to localStorage');
+        } else {
+            console.log('Loaded workDays from localStorage:', workDays);
+        }
+
+        let completedItems = JSON.parse(localStorage.getItem('completedItems')) || {};
+
+        function saveCompletionState() {
+            localStorage.setItem('completedItems', JSON.stringify(completedItems));
+        }
+
+        function saveWorkDays() {
+            console.log('Saving workDays to localStorage:', workDays);
+            localStorage.setItem('workDaysData', JSON.stringify(workDays));
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const timelineContainer = document.getElementById('timeline-container');
+            const detailsContainer = document.getElementById('details-container');
+            const progressBar = document.getElementById('progress-bar');
+            const progressText = document.getElementById('progress-text');
+            const editPlanningBtn = document.getElementById('edit-planning-btn');
+            
+            let activeDay = null;
+            let editingMode = false;
+
+            editPlanningBtn.addEventListener('click', () => {
+                editingMode = !editingMode;
+                editPlanningBtn.textContent = editingMode ? 'Opslaan' : 'Bewerk Planning';
+                if (!editingMode) { // This block runs when exiting editing mode (i.e., clicking 'Opslaan')
+                    saveChanges(); // Updates workDays array in memory
+                    saveWorkDays(); // Saves workDays array from memory to localStorage
+                }
+                renderDetails(activeDay); // Re-renders the details based on the updated workDays (from memory)
+                updateActiveCard();
+            });
+
+            window.toggleCompletion = function(event, dayNumber, type, index) {
+                const key = `${dayNumber}-${type}-${index}`;
+                completedItems[key] = event.target.checked;
+                saveCompletionState();
+                
+                const listItem = event.target.closest('.task-item');
+                if (listItem) {
+                    if (event.target.checked) {
+                        listItem.classList.add('completed');
+                    } else {
+                        listItem.classList.remove('completed');
+                    }
+                }
+            };
+
+            function saveChanges() {
+                if (!activeDay) return;
+
+                const currentDayDataIndex = workDays.findIndex(d => d.day === activeDay);
+                if (currentDayDataIndex === -1) return;
+
+                const currentDayElement = detailsContainer.querySelector('.detail-card-enter');
+                if (!currentDayElement) return;
+
+                const newTasks = [];
+                currentDayElement.querySelectorAll('#tasks-list input[type="text"]').forEach(input => {
+                    if (input.value.trim() !== '') {
+                        newTasks.push(input.value.trim());
+                    }
+                });
+                workDays[currentDayDataIndex].tasks = newTasks;
+
+                const newResidentActions = [];
+                currentDayElement.querySelectorAll('#resident-actions-list input[type="text"]').forEach(input => {
+                    if (input.value.trim() !== '') {
+                        newResidentActions.push(input.value.trim());
+                    }
+                });
+                workDays[currentDayDataIndex].residentActions = newResidentActions;
+                
+                console.log('workDays array updated in memory after changes:', workDays[currentDayDataIndex]);
+            }
+
+            function renderTimeline() {
+                timelineContainer.innerHTML = '';
+                workDays.forEach(day => {
+                    const dayCard = document.createElement('div');
+                    dayCard.className = 'day-card flex-shrink-0 w-32 h-32 p-3 border-2 border-stone-200 bg-white rounded-lg cursor-pointer hover:border-blue-400 hover:shadow-lg';
+                    dayCard.dataset.day = day.day;
+                    
+                    const date = new Date(day.date + 'T00:00:00');
+                    const dayOfWeek = date.toLocaleDateString('nl-NL', { weekday: 'short' });
+                    const dayOfMonth = date.toLocaleDateString('nl-NL', { day: '2-digit', month: 'short' });
+
+                    dayCard.innerHTML = `
+                        <div class="flex justify-between items-center text-sm mb-1">
+                            <span class="font-bold text-slate-700">Dag ${day.day}</span>
+                        </div>
+                        <div class="text-xs text-slate-500">${dayOfWeek}</div>
+                        <div class="text-sm font-semibold text-slate-600">${dayOfMonth}</div>
+                        <div class="text-xs text-slate-500 mt-2 truncate">${day.title}</div>
+                    `;
+
+                    dayCard.addEventListener('click', () => {
+                        activeDay = day.day;
+                        renderDetails(day.day);
+                        updateActiveCard();
+                    });
+
+                    timelineContainer.appendChild(dayCard);
+                });
+                updateActiveCard();
+            }
+
+            function renderDetails(dayNumber) {
+                const dayData = workDays.find(d => d.day === dayNumber);
+                if (!dayData) {
+                     detailsContainer.innerHTML = `
+                        <div class="bg-white rounded-xl shadow-md p-6 text-center detail-card-enter">
+                            <h3 class="text-xl font-bold text-slate-800">Welkom!</h3>
+                            <p class="text-slate-600 mt-2">Selecteer een dag uit de tijdlijn hierboven om de details te bekijken.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                let tasksHtml = '';
+                let residentActionsHtml = '';
+
+                if (editingMode) {
+                    tasksHtml = dayData.tasks.map((task, index) => `
+                        <li class="flex items-center mb-2">
+                            <input type="text" value="${task}" data-type="tasks" data-index="${index}" class="flex-grow border rounded-md px-2 py-1 mr-2 text-slate-700">
+                            <button onclick="deleteItem(event, ${dayData.day}, 'tasks', ${index})" class="text-red-500 hover:text-red-700 text-xl leading-none">🗑️</button>
+                        </li>
+                    `).join('');
+                    tasksHtml += `
+                        <button onclick="addItem(${dayData.day}, 'tasks')" class="mt-4 px-3 py-1 bg-green-600 text-white rounded-md hover:bg-green-700 transition">Nieuwe taak toevoegen</button>
+                    `;
+
+                    residentActionsHtml = dayData.residentActions.map((action, index) => `
+                        <li class="flex items-center mb-2">
+                            <input type="text" value="${action}" data-type="residentActions" data-index="${index}" class="flex-grow border rounded-md px-2 py-1 mr-2 text-slate-700">
+                            <button onclick="deleteItem(event, ${dayData.day}, 'residentActions', ${index})" class="text-red-500 hover:text-red-700 text-xl leading-none">🗑️</button>
+                        </li>
+                    `).join('');
+                    residentActionsHtml += `
+                        <button onclick="addItem(${dayData.day}, 'residentActions')" class="mt-4 px-3 py-1 bg-green-600 text-white rounded-md hover:bg-green-700 transition">Nieuwe actie toevoegen</button>
+                    `;
+
+                } else { // Normal checklist mode
+                    tasksHtml = dayData.tasks.map((task, index) => {
+                        const key = `${dayData.day}-tasks-${index}`;
+                        const isCompleted = completedItems[key] || false;
+                        const checkedAttr = isCompleted ? 'checked' : '';
+                        const completedClass = isCompleted ? 'completed' : '';
+                        return `
+                            <li class="task-item ${completedClass}">
+                                <input type="checkbox" id="task-${dayData.day}-${index}" ${checkedAttr}>
+                                <label for="task-${dayData.day}-${index}"><span>${task}</span></label>
+                            </li>
+                        `;
+                    }).join('');
+
+                    residentActionsHtml = dayData.residentActions.map((action, index) => {
+                        const key = `${dayData.day}-residentActions-${index}`;
+                        const isCompleted = completedItems[key] || false;
+                        const checkedAttr = isCompleted ? 'checked' : '';
+                        const completedClass = isCompleted ? 'completed' : '';
+                        return `
+                            <li class="task-item ${completedClass}">
+                                <input type="checkbox" id="action-${dayData.day}-${index}" ${checkedAttr}>
+                                <label for="action-${dayData.day}-${index}"><span>${action}</span></label>
+                            </li>
+                        `;
+                    }).join('');
+                }
+
+                detailsContainer.innerHTML = `
+                    <div class="bg-white rounded-xl shadow-md p-6 md:p-8 detail-card-enter">
+                         <h3 class="text-xl font-bold text-slate-800 mb-4">Details voor Dag ${dayData.day} (${new Date(dayData.date + 'T00:00:00').toLocaleDateString('nl-NL', { weekday: 'long', day: 'numeric', month: 'long' })})</h3>
+                         <div class="grid md:grid-cols-2 gap-8">
+                            <div>
+                                <h4 class="font-semibold text-slate-700 mb-2 border-b pb-2">Werkzaamheden</h4>
+                                <ul class="list-none p-0 m-0" id="tasks-list">
+                                    ${tasksHtml}
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-slate-700 mb-2 border-b pb-2">Wat u moet doen</h4>
+                                <ul class="list-none p-0 m-0" id="resident-actions-list">
+                                    ${residentActionsHtml}
+                                </ul>
+                            </div>
+                         </div>
+                    </div>
+                `;
+
+                // Re-attach event listeners for checkboxes after innerHTML update in non-editing mode
+                if (!editingMode) {
+                    detailsContainer.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                        checkbox.addEventListener('change', (event) => {
+                            const idParts = event.target.id.split('-'); // e.g., ["task", "1", "0"]
+                            const dayNum = parseInt(idParts[1]);
+                            const type = idParts[0] === 'task' ? 'tasks' : 'residentActions';
+                            const index = parseInt(idParts[2]);
+                            window.toggleCompletion(event, dayNum, type, index);
+                        });
+                    });
+                }
+            }
+
+            function updateActiveCard() {
+                const dayCards = document.querySelectorAll('.day-card');
+                dayCards.forEach(card => {
+                    card.classList.remove('active');
+                    if (parseInt(card.dataset.day) === activeDay) {
+                        card.classList.add('active');
+                    }
+                });
+            }
+
+            function updateProgress() {
+                const today = new Date();
+                const startDate = new Date(workDays[0].date + 'T00:00:00');
+                const endDate = new Date(workDays[workDays.length - 1].date + 'T00:00:00');
+                endDate.setDate(endDate.getDate() + 1);
+
+                if (today < startDate) {
+                     progressBar.style.width = '0%';
+                     progressText.textContent = `Het project start op ${startDate.toLocaleDateString('nl-NL')}.`;
+                     return;
+                }
+                if (today > endDate) {
+                     progressBar.style.width = '100%';
+                     progressText.textContent = 'Project voltooid!';
+                     return;
+                }
+                
+                let completedWorkDaysCount = 0;
+                workDays.forEach(day => {
+                    const dayDate = new Date(day.date + 'T00:00:00');
+                    if(dayDate < today) {
+                        completedWorkDaysCount++;
+                    }
+                });
+                
+                const progress = (completedWorkDaysCount / workDays.length) * 100;
+                progressBar.style.width = `${progress}%`;
+                progressText.textContent = `Dag ${completedWorkDaysCount} van ${workDays.length} is voorbij.`;
+
+                const todayString = today.toISOString().split('T')[0];
+                let todayData = workDays.find(d => d.date === todayString);
+                if(!todayData) {
+                    todayData = workDays.find(d => new Date(d.date) > today);
+                }
+                if (todayData && !activeDay) {
+                    activeDay = todayData.day;
+                }
+            }
+
+            window.addItem = function(dayNumber, type) {
+                const dayDataIndex = workDays.findIndex(d => d.day === dayNumber);
+                if (dayDataIndex === -1) return;
+
+                if (type === 'tasks') {
+                    workDays[dayDataIndex].tasks.push('');
+                } else if (type === 'residentActions') {
+                    workDays[dayDataIndex].residentActions.push('');
+                }
+                renderDetails(dayNumber);
+            };
+
+            window.deleteItem = function(event, dayNumber, type, index) {
+                const dayDataIndex = workDays.findIndex(d => d.day === dayNumber);
+                if (dayDataIndex === -1) return;
+
+                if (type === 'tasks') {
+                    workDays[dayDataIndex].tasks.splice(index, 1);
+                } else if (type === 'residentActions') {
+                    workDays[dayDataIndex].residentActions.splice(index, 1);
+                }
+
+                // Clean up completedItems for the deleted item's key
+                delete completedItems[`${dayNumber}-${type}-${index}`];
+                saveCompletionState();
+
+                renderDetails(dayNumber);
+            };
+
+            updateProgress();
+            renderTimeline();
+            renderDetails(activeDay);
+        });
+    </script>
+</body>
+</html>

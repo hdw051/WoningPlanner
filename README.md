@@ -12,6 +12,8 @@ The page is completely client‑side. All data is stored in `localStorage` so yo
 - **Progress indicator** – based on completed tasks and actions.
 - **Backup & reset** – download a JSON backup or reset the planning to defaults.
 
+The interface uses a clean design with CSS custom properties for all brand colors, making future theming straightforward.
+
 ## Usage
 
 Open `index.html` in a modern browser. The default schedule is loaded and saved to your local storage. If you edit the planning, your changes are stored only on your own device.

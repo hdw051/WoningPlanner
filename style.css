@@ -1,12 +1,21 @@
+:root {
+    --brand-bg-start: #6EE7B7;
+    --brand-bg-mid: #3B82F6;
+    --brand-bg-end: #9333EA;
+    --accent-start: #F472B6;
+    --accent-end: #8B5CF6;
+    --text-color: #1C1C1E;
+}
+
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Inter', sans-serif;
-    color: #1C1C1E; /* iOS label color */
+    color: var(--text-color);
     line-height: 1.5;
 }
 
 /* Animated gradient background */
 .gradient-bg {
-    background: linear-gradient(115deg, #6EE7B7, #3B82F6, #9333EA);
+    background: linear-gradient(115deg, var(--brand-bg-start), var(--brand-bg-mid), var(--brand-bg-end));
     background-size: 400% 400%;
     animation: gradientShift 15s ease infinite;
     min-height: 100vh;
@@ -50,7 +59,7 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
 }
 .day-card.active {
-    border-color: #7C3AED; /* violet-700 */
+    border-color: var(--accent-end);
     box-shadow: 0 4px 10px rgba(124, 58, 237, 0.4);
 }
 .detail-card-enter {
@@ -78,13 +87,13 @@ body {
 }
 
 #progress-bar {
-    background: linear-gradient(90deg, #F472B6, #8B5CF6);
+    background: linear-gradient(90deg, var(--accent-start), var(--accent-end));
     box-shadow: 0 4px 6px rgba(139, 92, 246, 0.3);
     transition: width 0.4s ease;
 }
 
 .button-primary {
-    background: linear-gradient(90deg, #F472B6, #8B5CF6);
+    background: linear-gradient(90deg, var(--accent-start), var(--accent-end));
     color: #fff;
     border-radius: 0.5rem;
     transition: opacity 0.15s ease;
@@ -100,4 +109,9 @@ body {
 }
 .button-secondary:hover {
     background-color: rgba(255, 255, 255, 0.3);
+}
+
+.logo {
+    color: var(--brand-bg-mid);
+    letter-spacing: -0.5px;
 }

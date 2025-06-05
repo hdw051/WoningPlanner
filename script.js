@@ -298,7 +298,7 @@ document.addEventListener('DOMContentLoaded', () => {
     workDays.forEach((day) => {
       const dayCard = document.createElement('div');
       dayCard.className =
-        'day-card flex-shrink-0 w-32 h-32 p-3 border-2 border-stone-200 bg-white rounded-lg cursor-pointer hover:border-blue-400 hover:shadow-lg';
+        'day-card glass-card flex-shrink-0 w-32 h-32 p-3 border-2 border-stone-200 rounded-lg cursor-pointer hover:border-blue-400 hover:shadow-lg';
       dayCard.dataset.day = day.day;
 
       const date = new Date(day.date + 'T00:00:00');
@@ -328,7 +328,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const dayData = workDays.find((d) => d.day === dayNumber);
     if (!dayData) {
       detailsContainer.innerHTML = `
-        <div class="bg-white rounded-xl shadow-md p-6 text-center detail-card-enter">
+        <div class="glass-card p-6 text-center detail-card-enter">
           <h3 class="text-xl font-bold text-slate-800">${t('welcomeTitle')}</h3>
           <p class="text-slate-600 mt-2">${t('welcomeText')}</p>
         </div>`;
@@ -387,7 +387,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     detailsContainer.innerHTML = `
-      <div class="bg-white rounded-xl shadow-md p-6 md:p-8 detail-card-enter">
+      <div class="glass-card p-6 md:p-8 detail-card-enter">
         <h3 class="text-xl font-bold text-slate-800 mb-4">Details voor Dag ${dayData.day} (${new Date(dayData.date + 'T00:00:00').toLocaleDateString('nl-NL', { weekday: 'long', day: 'numeric', month: 'long' })})</h3>
         <div class="grid md:grid-cols-2 gap-8">
           <div>

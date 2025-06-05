@@ -1,0 +1,48 @@
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #F5F5F4; /* Warm Neutral - stone-100 */
+}
+.timeline-container::-webkit-scrollbar {
+    height: 8px;
+}
+.timeline-container::-webkit-scrollbar-track {
+    background: #E7E5E4; /* stone-200 */
+}
+.timeline-container::-webkit-scrollbar-thumb {
+    background: #A8A29E; /* stone-400 */
+    border-radius: 4px;
+}
+.timeline-container::-webkit-scrollbar-thumb:hover {
+    background: #78716C; /* stone-500 */
+}
+.day-card {
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+}
+.day-card.active {
+    border-color: #1D4ED8; /* blue-700 */
+    background-color: #DBEAFE; /* blue-100 */
+}
+.detail-card-enter {
+    animation: fadeIn 0.5s ease-in-out;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.task-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding-left: 0;
+    list-style: none;
+    margin-bottom: 8px;
+}
+.task-item input[type="checkbox"] {
+    margin-top: 4px;
+    flex-shrink: 0;
+}
+.task-item.completed span {
+    text-decoration: line-through;
+    color: #6B7280; /* gray-500 */
+}

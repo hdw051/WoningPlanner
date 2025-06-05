@@ -9,7 +9,8 @@ The page is completely client‑side. All data is stored in `localStorage` so yo
 - **Interactive timeline** – scroll through days and select one to view tasks.
 - **Personal checklist** – tick off completed tasks or resident actions.
 - **Edit mode** – add, modify or delete tasks directly in the browser.
-- **Progress indicator** – shows how many days of the schedule have passed.
+- **Progress indicator** – based on completed tasks and actions.
+- **Backup & reset** – download a JSON backup or reset the planning to defaults.
 
 ## Usage
 
@@ -19,10 +20,12 @@ No build step is needed. You can serve the file with any static web server or op
 
 ## Development
 
-The project is a single HTML file using TailwindCSS from a CDN and vanilla JavaScript. Edits to the schedule are persisted with `localStorage`.
+The project uses TailwindCSS from a CDN and vanilla JavaScript. Edits to the schedule are persisted with `localStorage`.
 
 ```
 - index.html  – main application
+- style.css   – page styles
+- script.js   – application logic
 - README.md   – project information
 ```
 

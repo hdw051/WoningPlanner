@@ -1,8 +1,8 @@
 # WoningPlanner
 
-WoningPlanner is a simple single‑page planner that provides a daily schedule of renovation tasks. The timeline allows you to quickly see each planned workday and click a day to view details.
+WoningPlanner is a simple planner that provides a daily schedule of renovation tasks. The timeline allows you to quickly see each planned workday and click a day to view details.
 
-The page is completely client‑side. All data is stored in `localStorage` so your notes and edits stay in your browser. No build or server is required.
+Data is stored on the server via a small Node.js backend so changes are shared between visitors.
 
 ## Features
 
@@ -16,13 +16,18 @@ The interface uses a clean design with CSS custom properties for all brand color
 
 ## Usage
 
-Open `index.html` in a modern browser. The default schedule is loaded and saved to your local storage. If you edit the planning, your changes are stored only on your own device.
+Install dependencies and start the server:
 
-No build step is needed. You can serve the file with any static web server or open it directly from the filesystem.
+```bash
+npm install
+npm start
+```
+
+Then open `http://localhost:3000` in a browser. The planning is persisted to `data.json` on the server so edits are visible to everyone.
 
 ## Development
 
-The project uses TailwindCSS from a CDN and vanilla JavaScript. Edits to the schedule are persisted with `localStorage`.
+The project uses TailwindCSS from a CDN and vanilla JavaScript on the client. A minimal Express server stores the schedule in `data.json`.
 
 ```
 - index.html  – main application

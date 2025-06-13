@@ -1,0 +1,17 @@
+{
+  "name": "woningplanner",
+  "version": "1.0.0",
+  "description": "WoningPlanner is a simple single‑page planner that provides a daily schedule of renovation tasks. The timeline allows you to quickly see each planned workday and click a day to view details.",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}

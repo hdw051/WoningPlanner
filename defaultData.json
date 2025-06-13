@@ -1,0 +1,395 @@
+{
+  "workDays": [
+    {
+      "day": 1,
+      "date": "2025-06-10",
+      "title": "Voorbereiding & Asbest",
+      "tasks": [
+        {
+          "id": 1,
+          "text": "Afdekken van looproutes en werkplekken"
+        },
+        {
+          "id": 2,
+          "text": "Aftimmeren van schoorsteen en dakraam (zolder)"
+        },
+        {
+          "id": 3,
+          "text": "Verwijderen aftimmering bij asbestbuizen (hele woning)"
+        }
+      ],
+      "residentActions": [
+        {
+          "id": 4,
+          "text": "Zorg voor vrije toegang tot alle ruimtes"
+        },
+        {
+          "id": 5,
+          "text": "Maak looproutes en werkruimtes vrij"
+        },
+        {
+          "id": 6,
+          "text": "Zolder gedeeltelijk leegmaken (zoals besproken bij het huisbezoek)"
+        }
+      ]
+    },
+    {
+      "day": 2,
+      "date": "2025-06-11",
+      "title": "Asbest Verwijderen",
+      "tasks": [
+        {
+          "id": 7,
+          "text": "Verwijderen van asbest (hele woning)"
+        }
+      ],
+      "residentActions": [
+        {
+          "id": 8,
+          "text": "Toegang geven tot alle ruimtes"
+        },
+        {
+          "id": 9,
+          "text": "Looproutes en werkplekken vrijhouden"
+        },
+        {
+          "id": 10,
+          "text": "Zoldergedeelte leegmaken"
+        }
+      ]
+    },
+    {
+      "day": 3,
+      "date": "2025-06-12",
+      "title": "Voorbereiding WTW",
+      "tasks": [
+        {
+          "id": 11,
+          "text": "Afkoppelen van installatie (zolder)"
+        },
+        {
+          "id": 12,
+          "text": "Installatie reinigen"
+        },
+        {
+          "id": 13,
+          "text": "Gaten boren voor WTW-installatie (hele woning)"
+        },
+        {
+          "id": 14,
+          "text": "Aantekenen van posities voor WTW-onderdelen"
+        }
+      ],
+      "residentActions": [
+        {
+          "id": 15,
+          "text": "Toegang geven tot alle ruimtes"
+        },
+        {
+          "id": 16,
+          "text": "Zoldergedeelte leegmaken"
+        },
+        {
+          "id": 17,
+          "text": "Radiatorkranen en bedieningsknoppen bereikbaar maken"
+        }
+      ]
+    },
+    {
+      "day": 4,
+      "date": "2025-06-13",
+      "title": "Elektrische Installaties",
+      "tasks": [
+        {
+          "id": 18,
+          "text": "Nieuwe deurbel installeren (voorgevel)"
+        },
+        {
+          "id": 19,
+          "text": "Vervangen van groepenkast (meterkast)"
+        },
+        {
+          "id": 20,
+          "text": "Perilex-aansluiting aanleggen in keuken (indien nodig)"
+        }
+      ],
+      "residentActions": [
+        {
+          "id": 21,
+          "text": "Toegang geven tot alle ruimtes"
+        },
+        {
+          "id": 22,
+          "text": "Meterkast leegmaken"
+        },
+        {
+          "id": 23,
+          "text": "Fornuis verplaatsen of keukenkastje leegmaken (bij perilex)"
+        },
+        {
+          "id": 24,
+          "text": "Zoldergedeelte leeghouden"
+        }
+      ]
+    },
+    {
+      "day": 5,
+      "date": "2025-06-16",
+      "title": "Radiatoren Vervangen",
+      "tasks": [
+        {
+          "id": 25,
+          "text": "Radiatoren vervangen in keuken en woonkamer"
+        },
+        {
+          "id": 26,
+          "text": "Vervangen van radiatorkranen"
+        },
+        {
+          "id": 27,
+          "text": "Spoelen/reinigen van radiatoren (binnenzijde)"
+        }
+      ],
+      "residentActions": [
+        {
+          "id": 28,
+          "text": "Toegang geven tot alle ruimtes"
+        },
+        {
+          "id": 29,
+          "text": "Radiatorkranen bereikbaar houden"
+        },
+        {
+          "id": 30,
+          "text": "Zoldergedeelte leeghouden"
+        }
+      ]
+    },
+    {
+      "day": 6,
+      "date": "2025-06-17",
+      "title": "Installatie Warmtepomp",
+      "tasks": [
+        {
+          "id": 31,
+          "text": "Installatie warmtepomp op zolder"
+        },
+        {
+          "id": 32,
+          "text": "Installatie WTW-unit"
+        },
+        {
+          "id": 33,
+          "text": "Aanleggen ventilatiekanalen"
+        },
+        {
+          "id": 34,
+          "text": "Aansluiten afzuigkap"
+        }
+      ],
+      "residentActions": [
+        {
+          "id": 35,
+          "text": "Toegang geven tot alle ruimtes"
+        },
+        {
+          "id": 36,
+          "text": "Zoldergedeelte leegmaken"
+        }
+      ]
+    },
+    {
+      "day": 7,
+      "date": "2025-06-18",
+      "title": "Kozijnen en Deuren",
+      "tasks": [
+        {
+          "id": 37,
+          "text": "Vervangen van kunststof kozijnen"
+        },
+        {
+          "id": 38,
+          "text": "Vervangen voor- en achterdeur"
+        },
+        {
+          "id": 39,
+          "text": "Plaatsen van vensterbanken"
+        },
+        {
+          "id": 40,
+          "text": "Glas vervangen (1e verdieping)"
+        }
+      ],
+      "residentActions": [
+        {
+          "id": 41,
+          "text": "Zorg dat ramen en vensterbanken leeg zijn"
+        },
+        {
+          "id": 42,
+          "text": "Geef aan waar de nieuwe sleutels kunnen worden opgehaald"
+        },
+        {
+          "id": 43,
+          "text": "Toegang geven tot alle ruimtes"
+        }
+      ]
+    },
+    {
+      "day": 8,
+      "date": "2025-06-19",
+      "title": "Aftimmering & Isolatie",
+      "tasks": [
+        {
+          "id": 44,
+          "text": "Aftimmering om WTW-buizen (slaapkamer)"
+        },
+        {
+          "id": 45,
+          "text": "Geïsoleerd vloerluik plaatsen"
+        },
+        {
+          "id": 46,
+          "text": "Isolatie begane grondvloer (of op dag 9)"
+        }
+      ],
+      "residentActions": [
+        {
+          "id": 47,
+          "text": "Toegang geven tot alle ruimtes"
+        },
+        {
+          "id": 48,
+          "text": "Zoldergedeelte leeghouden"
+        }
+      ]
+    },
+    {
+      "day": 9,
+      "date": "2025-06-20",
+      "title": "Vloerisolatie & Afbouw",
+      "tasks": [
+        {
+          "id": 49,
+          "text": "Isoleren van begane grondvloer (indien nog niet gebeurd)"
+        },
+        {
+          "id": 50,
+          "text": "Voorzetwand en brandwerend plafond in berging/uitbouw (indien gekozen)"
+        }
+      ],
+      "residentActions": [
+        {
+          "id": 51,
+          "text": "Berging/uitbouw leegmaken"
+        },
+        {
+          "id": 52,
+          "text": "Toegang geven tot alle ruimtes"
+        }
+      ]
+    },
+    {
+      "day": 10,
+      "date": "2025-06-23",
+      "title": "Afbouw Berging",
+      "tasks": [
+        {
+          "id": 53,
+          "text": "Plaatsen voorzetwand en brandwerend plafond in berging/uitbouw (indien gekozen)"
+        }
+      ],
+      "residentActions": [
+        {
+          "id": 54,
+          "text": "Kruipluik bereikbaar houden"
+        },
+        {
+          "id": 55,
+          "text": "Toegang geven tot alle ruimtes"
+        }
+      ]
+    },
+    {
+      "day": 11,
+      "date": "2025-06-24",
+      "title": "Schilderwerk",
+      "tasks": [
+        {
+          "id": 56,
+          "text": "Schilderwerk aan aftimmeringen en plafond van uitbouw (hele woning)"
+        }
+      ],
+      "residentActions": [
+        {
+          "id": 57,
+          "text": "Vensterbanken leegmaken"
+        },
+        {
+          "id": 58,
+          "text": "Raambekleding verwijderen"
+        },
+        {
+          "id": 59,
+          "text": "Kruipluik bereikbaar houden"
+        },
+        {
+          "id": 60,
+          "text": "Toegang geven tot alle ruimtes"
+        }
+      ]
+    },
+    {
+      "day": 12,
+      "date": "2025-06-25",
+      "title": "Vervolg Schilderwerk",
+      "tasks": [
+        {
+          "id": 61,
+          "text": "Vervolg schilderwerk aan aftimmeringen en plafond uitbouw"
+        }
+      ],
+      "residentActions": [
+        {
+          "id": 62,
+          "text": "Toegang geven tot alle ruimtes"
+        }
+      ]
+    },
+    {
+      "day": 13,
+      "date": "2025-06-26",
+      "title": "Eindschoonmaak",
+      "tasks": [
+        {
+          "id": 63,
+          "text": "Eindschoonmaak (hele woning)"
+        }
+      ],
+      "residentActions": [
+        {
+          "id": 64,
+          "text": "Toegang geven tot alle ruimtes"
+        }
+      ]
+    },
+    {
+      "day": 14,
+      "date": "2025-06-27",
+      "title": "Oplevering",
+      "tasks": [
+        {
+          "id": 65,
+          "text": "Vooroplevering en oplevering van uw woning"
+        }
+      ],
+      "residentActions": [
+        {
+          "id": 66,
+          "text": "Toegang geven tot alle ruimtes"
+        }
+      ]
+    }
+  ],
+  "completedItems": {}
+}

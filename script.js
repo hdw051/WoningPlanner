@@ -202,21 +202,49 @@ const defaultWorkDays = [
   }
 ];
 
-let workDays = JSON.parse(localStorage.getItem('workDaysData'));
-if (!workDays) {
-  workDays = defaultWorkDays;
-  localStorage.setItem('workDaysData', JSON.stringify(workDays));
+let workDays = null;
+let completedItems = {};
+
+async function loadData() {
+  try {
+    const res = await fetch('/api/data');
+    if (res.ok) {
+      const data = await res.json();
+      workDays = data.workDays || defaultWorkDays;
+      completedItems = data.completedItems || {};
+      // ensure IDs continue incrementing
+      const allIds = workDays.flatMap(d => [
+        ...d.tasks.map(t => t.id),
+        ...d.residentActions.map(a => a.id)
+      ]);
+      nextId = Math.max(...allIds, 0) + 1;
+    } else {
+      workDays = defaultWorkDays;
+      completedItems = {};
+    }
+  } catch (err) {
+    workDays = defaultWorkDays;
+    completedItems = {};
+  }
 }
-let completedItems = JSON.parse(localStorage.getItem('completedItems')) || {};
+
+function saveData() {
+  fetch('/api/data', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ workDays, completedItems })
+  });
+}
 
 function saveCompletionState() {
-  localStorage.setItem('completedItems', JSON.stringify(completedItems));
+  saveData();
 }
 function saveWorkDays() {
-  localStorage.setItem('workDaysData', JSON.stringify(workDays));
+  saveData();
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+  await loadData();
   const timelineContainer = document.getElementById('timeline-container');
   const detailsContainer = document.getElementById('details-container');
   const progressBar = document.getElementById('progress-bar');
@@ -239,9 +267,8 @@ document.addEventListener('DOMContentLoaded', () => {
     updateActiveCard();
   });
 
-  resetBtn.addEventListener('click', () => {
-    localStorage.removeItem('workDaysData');
-    localStorage.removeItem('completedItems');
+  resetBtn.addEventListener('click', async () => {
+    await fetch('/api/reset', { method: 'POST' });
     location.reload();
   });
 
